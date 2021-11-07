@@ -11,26 +11,15 @@ public class CharacterAnimator : MonoBehaviour
     private BVHData data; // BVH data of the BVHFile will be loaded here
     private int currFrame = 0; // Current frame of the animation
 
-
+    private int jointSize = 2;
+    private int headJointSize = 8;
 
     // Start is called before the first frame update
     void Start()
     {
         BVHParser parser = new BVHParser();
         data = parser.Parse(BVHFile);
-        //print(data.rootJoint.name);
         CreateJoint(data.rootJoint, Vector3.zero);
-        // Vector3 v1 = new Vector3(0,1,0);
-        // Vector3 v2 = new Vector3(1,7,6);
-        // Matrix4x4 r = RotateTowardsVector(v2);
-        // Vector3 result = r.MultiplyVector(v1);
-        // print(r.ToString());
-        // print(result.ToString());
-        // Matrix4x4 rCorrect = MatrixUtils.RotateTowardsVector(v2);
-        // Vector3 resultCorrect = rCorrect.MultiplyVector(v1);
-        // print(rCorrect.ToString());
-        // print(resultCorrect.ToString());
-        //CreateCylinderBetweenPoints(new Vector3(0,0,0), new Vector3(0,10,0), 0.5f);
     }
 
     // Returns a Matrix4x4 representing a rotation aligning the up direction of an object with the given v
@@ -43,7 +32,6 @@ public class CharacterAnimator : MonoBehaviour
         float thetaXDeg = 90 - (thetaX * Mathf.Rad2Deg); 
         float thetaZDeg = 90 - (thetaZ * Mathf.Rad2Deg);
         return MatrixUtils.RotateX(thetaXDeg) * MatrixUtils.RotateZ(-thetaZDeg);
-
     }
 
     // Creates a Cylinder GameObject between two given points in 3D space
@@ -75,10 +63,10 @@ public class CharacterAnimator : MonoBehaviour
         jointSphere.transform.parent = joint.gameObject.transform;
         
         // scale sphere representation of joint
-        int scaleInt = 2;
+        int scaleInt = jointSize;
         if (joint.name == "Head")
         {
-            scaleInt = 8;
+            scaleInt = headJointSize;
         }        
         
         // Vector3 scaleVec = new Vector3(scaleInt, scaleInt, scaleInt);
@@ -91,16 +79,9 @@ public class CharacterAnimator : MonoBehaviour
         // apply translation to joint
         MatrixUtils.ApplyTransform(joint.gameObject, MatrixUtils.Translate(translationVec));
  
-
-        // Vector3 jointPos = joint.gameObject.transform.position;
-        // Transform jointTra = joint.gameObject.transform;
-        // recursively create joint objects
         foreach (BVHJoint child in joint.children)
         {
             CreateJoint(child, translationVec);
-            // GameObject cylinder = CreateCylinderBetweenPoints(jointPos, child.gameObject.transform.position, 
-            //     0.5f);
-            // cylinder.gameObject.transform.parent = jointTra;
             GameObject bone = CreateCylinderBetweenPoints(joint.gameObject.transform.position,
              joint.gameObject.transform.position+child.offset, 0.5f);
             bone.gameObject.transform.parent = joint.gameObject.transform;
