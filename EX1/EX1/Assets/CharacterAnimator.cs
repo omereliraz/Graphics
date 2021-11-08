@@ -20,17 +20,6 @@ public class CharacterAnimator : MonoBehaviour
         data = parser.Parse(BVHFile);
         //print(data.rootJoint.name);
         CreateJoint(data.rootJoint, Vector3.zero);
-        // Vector3 v1 = new Vector3(0,1,0);
-        // Vector3 v2 = new Vector3(1,7,6);
-        // Matrix4x4 r = RotateTowardsVector(v2);
-        // Vector3 result = r.MultiplyVector(v1);
-        // print(r.ToString());
-        // print(result.ToString());
-        // Matrix4x4 rCorrect = MatrixUtils.RotateTowardsVector(v2);
-        // Vector3 resultCorrect = rCorrect.MultiplyVector(v1);
-        // print(rCorrect.ToString());
-        // print(resultCorrect.ToString());
-        //CreateCylinderBetweenPoints(new Vector3(0,0,0), new Vector3(0,10,0), 0.5f);
     }
 
     // Returns a Matrix4x4 representing a rotation aligning the up direction of an object with the given v
